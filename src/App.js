@@ -1,6 +1,9 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Header from './components/Header'
 import Formulario from './components/Formulario'
+import Resumen from './components/Resumen'
+import Resultado from './components/Resultado'
+import Spinner from './components/Spinner'
 import styled from '@emotion/styled'
 
 const Contenedor = styled.div`
@@ -17,7 +20,23 @@ padding: 3rem;
 
 
 
+
 function App() {
+
+  const [resumen, guardarResumen] = useState({
+    cotizacion: 0,
+    datos: {
+      marca: '',
+      plan: '',
+      year:''
+    }
+  });
+
+  const [cargando, guardarCargando] = useState(false);
+
+  //extraer datos
+  const {cotizacion, datos } = resumen;
+  
   return (
     <Contenedor>
       <Header
@@ -25,8 +44,17 @@ function App() {
       />
       <ContenedorFormulario>
         <Formulario
-        
+          guardarResumen={guardarResumen}
+          guardarCargando={guardarCargando}
         />
+
+        {cargando ? <Spinner /> : null}
+      
+        <Resumen
+          datos={datos} />
+        
+        {cargando ? null : <Resultado cotizacion={cotizacion}/>}
+        
       </ContenedorFormulario>
     </Contenedor>
   );
